@@ -14,6 +14,8 @@ import (
 const linuxPackageUrl = "https://dl.influxdata.com/telegraf/releases/telegraf_1.18.0-1_amd64.deb"
 
 func main() {
+	// Telegraf is not part of the default Ubuntu repo, so we need to download and install manually
+	// On macOS hosts, it's automatically installed from Brew by Bitrise CLI (see step.yml)
 	if runtime.GOOS == "linux" {
 		installOnLinux()
 	}
@@ -27,12 +29,13 @@ func main() {
 	configFile.WriteString(configContents)
 
 	telegrafCmd := exec.Command("telegraf", "--config", configFile.Name())
-	log.Infof("Starting Telegraf agent in the background: %s", telegrafCmd.String())
-	err = telegrafCmd.Start()
+	log.Infof("Starting Telegraf agent in the background")
+	err = telegrafCmd.Start() // start in background
 	if err != nil {
 		failf("Failed to start command: %s", err)
 	}
 
+	log.Donef("$ %s", telegrafCmd.String())
 	os.Exit(0)
 }
 
@@ -55,7 +58,7 @@ func installOnLinux() {
 		failf("Failed to download Telegraf package from %s: %s", linuxPackageUrl, err)
 	}
 	defer resp.Body.Close()
-	log.Infof("Download successful")
+	log.Donef("Download successful")
 
 	_, err = io.Copy(debFile, resp.Body)
 	if err != nil {
@@ -67,5 +70,5 @@ func installOnLinux() {
 	if err != nil {
 		failf("Failed to install package: %s", err)
 	}
-	log.Infof("Telegraf successfully installed")
+	log.Donef("Telegraf successfully installed")
 }
