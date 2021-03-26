@@ -1,0 +1,64 @@
+#
+# A couple of useful guides & docs:
+#
+# - Main Bitrise CLI docs: https://github.com/bitrise-io/bitrise/tree/master/_docs
+# - Step Development Guideline: https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
+# - Bitrise.yml format spec: https://github.com/bitrise-io/bitrise/blob/master/_docs/bitrise-yml-format-spec.md
+# - Bitrise docs: http://devcenter.bitrise.io/
+# - Bitrise CLI guides: http://devcenter.bitrise.io/bitrise-cli/
+
+title: |-
+  telegraf-metrics-agent
+summary: |
+  Starts Telegraf in the background to collect system metrics during the build
+description: |
+  TODO
+website: https://github.com/ofalvai/bitrise-step-telegraf-metrics-agent
+source_code_url: https://github.com/ofalvai/bitrise-step-telegraf-metrics-agent
+support_url: https://github.com/ofalvai/bitrise-step-telegraf-metrics-agent/issues
+host_os_tags:
+  - osx-10.10
+  - ubuntu-16.04
+
+type_tags:
+  - utility
+
+is_requires_admin_user: true
+is_always_run: true
+is_skippable: true
+run_if: ""
+
+deps:
+  brew:
+  - name: telegraf
+
+
+toolkit:
+  go:
+    package_name: github.com/ofalvai/bitrise-step-telegraf-metrics-agent
+
+
+inputs:
+  - telegraf_conf: |
+      # Global tags can be specified here in key="value" format.
+      [global_tags]
+        app = "$BITRISE_APP_SLUG"
+        build = "$BITRISE_BUILD_SLUG"
+        build_number = "$BITRISE_BUILD_NUMBER"
+    opts:
+      title: Telegraf config
+      summary: Contents of telegraf.conf
+      description: |
+        TODO
+      is_expand: true
+      is_required: true
+
+outputs:
+  - EXAMPLE_STEP_OUTPUT:
+    opts:
+      title: "Example Step Output"
+      summary: Summary. No more than 2-3 sentences.
+      description: |
+        Description of this output.
+
+        Can be Markdown formatted text.
