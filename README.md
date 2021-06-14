@@ -12,6 +12,17 @@ By default, the following metrics are collected:
 - [Disk IO](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/diskio)
 - [Network](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/net/NET_README.md)
 
+## How to use
+
+Include as a custom step in your `bitrise.yml`:
+
+``` yml
+steps:
+  - git::https://github.com/ofalvai/bitrise-step-telegraf-metrics-agent.git@master:
+```
+
+You need to add this manually to the `bitrise.yml` file, but after saving the file, you can use the workflow editor to tweak the step inputs.
+
 ## Inputs
 
 - `telegraf_conf`: Contents of the `telegraf.conf` file ([docs](https://docs.influxdata.com/telegraf/v1.18/administration/configuration/)). See `step.yml` or the Bitrise workflow editor for the default config
